@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>language for country</title>
+    <style>
+        * {
+            margin: 0;
+            text-align: center;
+        }
+
+        body {
+            background-color: #6b9b85;
+            font-size: 25px;
+
+        }
+
+        .header {
+            background-color: cadetblue;
+            text-align: center;
+            background-color: #273e47;
+        }
+
+        #langs {
+            font-size: 50px;
+            border: none;
+            outline: 0;
+            background-color: #cec075;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            color: #273e47;
+        }
+
+        .oneCountry {
+            display: inline-block;
+            text-align: center;
+            width: 5%;
+            padding: 35px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <select name="" id="langs" onchange="changeLang(this.value);">
+            <option value="ara">Arabic</option>
+            <option value="eng">English</option>
+            <option value="spa">Spanish</option>
+            <option value="ita">Italian</option>
+        </select>
+    </div>
+
+    <span id="countCountries" style="font-size: 55px; color: #273e47;"></span>
+
+    <div class="container">
+
+    </div>
+
+    <script src="jquery-3.6.2.js"></script>
+    <script>
+
+        function changeLang(lang) {
+            document.querySelector(".container").innerHTML = "";
+
+            fetch("https://restcountries.com/v3.1/lang/" + lang)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (json) {
+                    console.log(json[1]);
+                    document.querySelector("#countCountries").innerHTML = json.length;
+                    for (var i = 0; i < json.length; i++) {
+                        oneCountry(json[i]);
+                    }
+                })
+                .catch(function (error) {
+                    console.log('Request failed', error);
+                });
+        }
+
+
+        function oneCountry(arr) {
+            document.querySelector(".container").innerHTML += "<div id='oneCountry' class='oneCountry'>" + "<img src='" + arr.flags.svg + "' width='100%'> <br>" + arr.name.common + "</div>";
+
+        }
+
+        $(".container").click(function () {
+            $(".oneCountry").css("display", "none")
+            $("#countCountries").css("display", "none")
+        });
+        function oneCountry(arr) {
+            document.querySelector(".container").innerHTML += "<div id='oneCountry' class='oneCountry'>" + "<img src='" + arr.flags.svg + "' width='100%'> <br>" + arr.name.common + "</div>";
+            $("#langs").click(function () {
+                $("#countCountries").css("display", "block")
+            });
+        }
+
+        
+
+    </script>
+</body>
+
+</html>
